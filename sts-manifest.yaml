@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: energi-node
+spec:
+  serviceName: energi-node
+  replicas: 1
+  selector:
+    matchLabels:
+      app: energi-node
+  template:
+    metadata:
+      labels:
+        app: energi-node
+    spec:
+      containers:
+      - name: energi-node
+        image: <docker-image>:<tag>
+        resources:
+          limits:
+            cpu: "1"
+            memory: "1Gi"
+          requests:
+            cpu: "0.5"
+            memory: "512Mi"
+        ports:
+        - containerPort: 39797
+          name: rpc
+        - containerPort: 39798
+          name: p2p
+        volumeMounts:
+        - name: data
+          mountPath: /app/data
+        - name: config
+          mountPath: /app/config.json
+          subPath: config.json
+      volumes:
+      - name: data
+        persistentVolumeClaim:
+          claimName: data-claim
+      - name: config
+        configMap:
+          name: energi-config
+  volumeClaimTemplates:
+  - metadata:
+      name: data-claim
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 1Gi
