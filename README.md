@@ -1,6 +1,7 @@
 README for Dockerfile
 
 **Task 1:**
+
 In this Dockerfile:
 1. We use the Alpine Linux base image, known for its minimal size and security focus.
 2. Install wget and gnupg to download files and verify checksums.
