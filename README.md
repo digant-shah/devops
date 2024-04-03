@@ -28,3 +28,17 @@ In this Dockerfile:
 2. Create a ConfigMap named energi-config containing your config.json file.
 3. Apply the StatefulSet manifest using kubectl apply -f statefulset.yaml.
 This configuration ensures that your Energi Node runs in a scalable and resilient manner within a Kubernetes cluster, with persistent storage for data and resource limits for stability.
+
+
+**Task 6:**
+
+In Terraform module:
+
+1. The suffix variable is used to toggle the suffixes for resource names. It defaults to -ci.
+2. An IAM role (aws_iam_role) is created with the specified name and an assume role policy allowing any AWS principal to assume this role.
+3. An IAM policy (aws_iam_policy) is created to allow assuming the above role. The policy's resource is dynamically set to the ARN of the created role.
+4. An IAM group (aws_iam_group) is created with the specified name.
+5. The IAM policy is attached to the IAM group using aws_iam_group_policy_attachment.
+6. An IAM user (aws_iam_user) is created and added to the IAM group.
+
+You can use this Terraform module by passing different values to the suffix variable to create resources with different names while maintaining naming consistency. For example, you can create resources with a suffix of -test by specifying suffix = "-test".
